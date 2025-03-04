@@ -1,7 +1,6 @@
 "use client";
 
 import { useLogs } from "@/hooks/useLogs";
-import { LogForm } from "@/components/log-form/log-form";
 import { LogSearch } from "@/components/log-search/log-search";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card } from "@/components/ui/card";
@@ -9,6 +8,9 @@ import { useProjects } from "@/hooks/useProjects";
 import { LogTable } from "./table/log-table";
 import { LogFormSkeleton } from "./log-form/formSkeleton";
 import { LogTableSkeleton } from "./table/tableSkeleton";
+import { LogForm } from "./log-form/LogForm";
+import { useState } from "react";
+import { LogPopulated } from "@/types/Log";
 
 export function LogManager() {
   const {
@@ -26,6 +28,13 @@ export function LogManager() {
     isSubmitting,
   } = useProjects();
 
+  const [filteredLogs, setFilteredLogs] = useState<LogPopulated[]>(logs ?? []);
+
+  // 🔹 עדכון הלוגים המסוננים לפי מה שחוזר מ-LogSearch
+  const handleFilter = (filtered: LogPopulated[]) => {
+    setFilteredLogs(filtered);
+  };
+
   if (
     (isLogsError && !isLogsLoading) ||
     (isProjectsError && !isProjectsLoading)
@@ -33,7 +42,7 @@ export function LogManager() {
     return <p className="text-red-500">Error loading logs</p>;
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-8 max-w-2xl mx-auto">
       <Tabs defaultValue="add" className="w-full">
         <TabsList className="grid w-full max-w-md mx-auto grid-cols-2">
           <TabsTrigger value="add">Add New Log</TabsTrigger>
@@ -57,12 +66,16 @@ export function LogManager() {
 
         <TabsContent value="view">
           <Card className="p-6 mb-6">
-            {/* למשל אפשר להחזיר את LogSearch כאן */}
+            <LogSearch
+              logs={logs ?? []} // תיקון הלוגים כך שלא יהיה undefined
+              projects={projects ?? []}
+              onFilter={handleFilter} // שימוש בפונקציה שמעדכנת את הסטייט של הלוגים המסוננים
+            />
           </Card>
           {isLogsLoading ? (
             <LogTableSkeleton />
           ) : (
-            <LogTable logs={logs ?? []} onDelete={deleteLog} />
+            <LogTable logs={filteredLogs ?? []} onDelete={deleteLog} />
           )}
         </TabsContent>
       </Tabs>
