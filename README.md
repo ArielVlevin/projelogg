@@ -1,36 +1,88 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+Log Management System
 
-## Getting Started
+📌 Log Management System is a full-stack application for managing logs of projects, tracking changes, and keeping detailed records of feature updates and bug fixes.
 
-First, run the development server:
+✨ Features
 
-```bash
+Add, edit, and delete logs for different projects.
+
+Filter logs by project, date range, or change type (Feature / Bug Fix).
+
+User-friendly UI with advanced search and filtering.
+
+Built using Next.js, MongoDB, React, and TailwindCSS.
+
+📸 Screenshots
+
+(Add project screenshots here)
+
+🚀 Getting Started (Without Docker)
+
+1️⃣ Clone the repository
+
+git clone https://github.com/YOUR_USERNAME/log-management.git
+cd log-management
+
+2️⃣ Install dependencies
+
+npm install
+
+3️⃣ Create .env file
+
+Create a .env file in the root directory and add the following:
+
+MONGODB_URI=mongodb+srv://your_username:your_password@your_cluster.mongodb.net/logs-db
+NEXTAUTH_SECRET=your_secret_key
+
+4️⃣ Start the application
+
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Your project will be running at http://localhost:3000.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+🐳 Running with Docker
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+1️⃣ Build and start the container
 
-## Learn More
+docker-compose up --build -d
 
-To learn more about Next.js, take a look at the following resources:
+2️⃣ Stopping the container
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+docker-compose down
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+🔄 Automatic Updates with Watchtower
 
-## Deploy on Vercel
+To automatically update the running Docker container when pushing new changes to GitHub:
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+docker run -d \
+ --name watchtower \
+ -v /var/run/docker.sock:/var/run/docker.sock \
+ containrrr/watchtower --interval 86400
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+(This checks for updates every 24 hours instead of every 30 seconds.)
+
+🛠 Troubleshooting
+
+1️⃣ MongoDB connection issues?
+
+Make sure your .env file contains the correct MongoDB URI.
+
+If using Docker, ensure the database container is running.
+
+2️⃣ Port conflicts?
+
+Ensure port 3000 is available, or change it in docker-compose.yml.
+
+3️⃣ Logs not appearing?
+
+Check server logs: docker logs -f log-management-app
+
+📜 License
+
+This project is licensed under the MIT License.
+
+✨ Contributors
+
+👤 Your Name📧 your.email@example.com
+
+🚀 Happy Logging! 🚀
