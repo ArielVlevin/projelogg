@@ -24,10 +24,11 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
-import { Log } from "@/types/Log";
+import { LogPopulated } from "@/types/Log";
+import { useNotification } from "@/context/NotificationContext";
 
 interface LogTableProps {
-  logs: Log[]; // רשימת הלוגים
+  logs: LogPopulated[]; // רשימת הלוגים
   onDelete: (id: string) => void; // פונקציית מחיקה שמגיעה מהמנהל הראשי
   isLoading?: boolean; // בחרי (לא חובה) לטיפול בטעינה
   isDeleting?: boolean; // בחרי (לא חובה) לטיפול במחיקה
@@ -41,16 +42,21 @@ export function LogTable({
   isDeleting = false,
   isError = false,
 }: LogTableProps) {
+  const { showError, showSuccess } = useNotification();
+
   const [logToDelete, setLogToDelete] = useState<string | null>(null);
 
-  // פונקציה שמופעלת כשמשתמש מאשר מחיקה
-  const confirmDelete = () => {
-    if (logToDelete) {
-      onDelete(logToDelete);
+  const confirmDelete = async () => {
+    if (!logToDelete) return;
+    try {
+      await onDelete(logToDelete);
+      showSuccess("Log deleted successfully!");
+    } catch (error) {
+      showError(`Error deleting log: ${error}`);
+    } finally {
       setLogToDelete(null);
     }
   };
-
   // מצבי טעינה/שגיאה
   if (isLoading || isDeleting) return <p>Loading logs...</p>;
   if (isError) return <p className="text-red-500">Error loading logs</p>;
@@ -85,7 +91,7 @@ export function LogTable({
               <TableCell className="font-medium">
                 {format(new Date(log.date), "MMM d, yyyy")}
               </TableCell>
-              <TableCell>{log.project}</TableCell>
+              <TableCell>{log.project_id.name}</TableCell>
               <TableCell>
                 <Badge
                   variant={log.logType === "feature" ? "default" : "secondary"}

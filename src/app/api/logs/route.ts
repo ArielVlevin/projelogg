@@ -3,16 +3,12 @@ import { NextResponse } from "next/server";
 import dbConnect from "@/lib/db";
 import Log from "@/models/Log";
 
-/**
- * GET  -> שליפה
- * POST -> יצירה
- */
-
-// פונקציה שמטפלת בקריאת GET
 export async function GET() {
   try {
     await dbConnect();
-    const logs = await Log.find().sort({ createdAt: -1 });
+    const logs = await Log.find()
+      .sort({ createdAt: -1 })
+      .populate("project_id");
 
     return NextResponse.json({ success: true, logs }, { status: 200 });
   } catch (error: any) {
@@ -23,7 +19,6 @@ export async function GET() {
   }
 }
 
-// פונקציה שמטפלת בקריאת POST
 export async function POST(request: Request) {
   try {
     await dbConnect();

@@ -21,7 +21,7 @@ import {
   SelectContent,
   SelectItem,
 } from "@/components/ui/select";
-import { Log } from "../types/Log";
+import { Log } from "@/types/Log";
 import { Project } from "@/types/Project";
 import { useNotification } from "@/context/NotificationContext";
 
@@ -29,11 +29,17 @@ interface LogFormProps {
   projects: Project[];
   onSubmit: (log: Log) => void;
   onAddNewProject: (newProject: Omit<Project, "_id">) => Promise<Project>;
+  isSubmitting: boolean;
 }
 
-export function LogForm({ projects, onSubmit, onAddNewProject }: LogFormProps) {
+export function LogForm({
+  projects,
+  onSubmit,
+  isSubmitting,
+  onAddNewProject,
+}: LogFormProps) {
   const { showError, showSuccess } = useNotification();
-  const [selectedProjectId, setSelectedProjectId] = useState<string>("");
+  const [selectedProject_id, setSelectedProject_id] = useState<string>("");
   const [isCreatingNewProject, setIsCreatingNewProject] = useState(false);
   const [newProjectName, setNewProjectName] = useState("");
 
@@ -50,65 +56,49 @@ export function LogForm({ projects, onSubmit, onAddNewProject }: LogFormProps) {
 
     // כאשר בוחרים פרויקט חדש
     if (isCreatingNewProject) {
-      // בדיקת שם הפרויקט
       if (!newProjectName) return showError("Missing project name");
 
-      // יוצרים פרויקט חדש דרך onAddNewProject
       try {
         const newProject: Project = {
           name: newProjectName,
         };
         const newProj = await onAddNewProject(newProject);
+        setSelectedProject_id(newProj._id!);
 
-        const newLog: Log = {
-          project_id: newProj._id!,
-          logType: changeType,
-          subTopic: subtopic,
-          description,
-        };
-        onSubmit(newLog);
-
-        //clean
-        setSelectedProjectId("");
-        setNewProjectName("");
-        setIsCreatingNewProject(false);
-        setChangeType("feature");
-        setSubtopic("");
-        setDescription("");
-
-        showSuccess(`New project "${newProj.name}" created and log saved`);
+        showSuccess(`New project "${newProj.name}" created secussfully`);
       } catch (err) {
         showError(`Error creating project: ${err}`);
       }
     } else {
-      // בחירה של פרויקט קיים
-      if (!selectedProjectId)
+      if (!selectedProject_id)
         return showError(`Please select a project or create a new one`);
-
-      const newLog: Log = {
-        project_id: selectedProjectId,
-        logType: changeType,
-        subTopic: subtopic,
-        description,
-      };
-      onSubmit(newLog);
-
-      // ניקוי
-      setSelectedProjectId("");
-      setNewProjectName("");
-      setIsCreatingNewProject(false);
-      setChangeType("feature");
-      setSubtopic("");
-      setDescription("");
-
-      showSuccess(`Log added successfully`);
     }
+
+    const newLog: Log = {
+      project_id: selectedProject_id,
+      logType: changeType,
+      subTopic: subtopic,
+      description,
+    };
+    onSubmit(newLog);
+
+    cleanForm();
+
+    showSuccess(`Log added successfully`);
   };
 
+  const cleanForm = () => {
+    setSelectedProject_id("");
+    setNewProjectName("");
+    setIsCreatingNewProject(false);
+    setChangeType("feature");
+    setSubtopic("");
+    setDescription("");
+  };
   return (
     <form onSubmit={handleSubmit}>
-      <CardHeader>
-        <CardTitle>Add New Log Entry</CardTitle>
+      <CardHeader className="mb-4">
+        <CardTitle className="text-2xl">Add New Log Entry</CardTitle>
         <CardDescription>
           Record a new feature or bug fix for your project
         </CardDescription>
@@ -117,65 +107,61 @@ export function LogForm({ projects, onSubmit, onAddNewProject }: LogFormProps) {
       <CardContent className="space-y-4">
         {/* בחירת פרויקט קיים או יצירת חדש */}
         <div className="space-y-2">
-          <Label>Project</Label>
+          <Label className="text-lg font-medium text-foreground">Project</Label>
+          <div className="flex space-x-4">
+            {/* אם יש פרויקטים, מציגים כפתורי בחירה */}
+            {projects.length > 0 && (
+              <div className="flex items-center space-x-4">
+                <Button
+                  type="button"
+                  variant={!isCreatingNewProject ? "default" : "outline"}
+                  onClick={() => setIsCreatingNewProject(false)}
+                >
+                  Select Existing
+                </Button>
+                <Button
+                  type="button"
+                  variant={isCreatingNewProject ? "default" : "outline"}
+                  onClick={() => setIsCreatingNewProject(true)}
+                >
+                  New Project
+                </Button>
+              </div>
+            )}
 
-          {/* אם יש פרויקטים, מציגים כפתורי בחירה */}
-          {projects.length > 0 && (
-            <div className="flex items-center space-x-4">
-              <Button
-                type="button"
-                variant={!isCreatingNewProject ? "default" : "outline"}
-                onClick={() => setIsCreatingNewProject(false)}
+            {!isCreatingNewProject && projects.length > 0 ? (
+              <Select
+                value={selectedProject_id}
+                onValueChange={(val) => setSelectedProject_id(val)}
               >
-                Select Existing
-              </Button>
-              <Button
-                type="button"
-                variant={isCreatingNewProject ? "default" : "outline"}
-                onClick={() => setIsCreatingNewProject(true)}
-              >
-                New Project
-              </Button>
-            </div>
-          )}
-
-          {/* אם אין פרויקטים, נכריח יצירה של חדש */}
-          {projects.length === 0 && (
-            <p className="text-sm text-gray-500">
-              No existing projects found. Create one below:
-            </p>
-          )}
-
-          {!isCreatingNewProject && projects.length > 0 ? (
-            // בוחרים פרויקט קיים מתוך רשימה
-            <Select
-              value={selectedProjectId}
-              onValueChange={(val) => setSelectedProjectId(val)}
-            >
-              <SelectTrigger>
-                <SelectValue placeholder="Select an existing project" />
-              </SelectTrigger>
-              <SelectContent>
-                {projects.map((proj) => (
-                  <SelectItem key={proj._id} value={proj._id!}>
-                    {proj.name}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          ) : (
-            // יוצרים פרויקט חדש – שדה טקסט
-            <Input
-              placeholder="Enter a new project name"
-              value={newProjectName}
-              onChange={(e) => setNewProjectName(e.target.value)}
-            />
-          )}
+                <SelectTrigger className="w-full">
+                  <SelectValue placeholder="Select an existing project" />
+                </SelectTrigger>
+                <SelectContent>
+                  {projects.map((proj) => (
+                    <SelectItem key={proj._id} value={proj._id!}>
+                      {proj.name}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            ) : (
+              // יוצרים פרויקט חדש – שדה טקסט
+              <Input
+                placeholder="Enter a new project name"
+                className="w-full"
+                value={newProjectName}
+                onChange={(e) => setNewProjectName(e.target.value)}
+              />
+            )}
+          </div>
         </div>
 
         {/* סוג השינוי (Feature/Bugfix) */}
         <div className="space-y-2">
-          <Label>Change Type</Label>
+          <Label className="text-lg font-medium text-foreground">
+            Change Type
+          </Label>
           <RadioGroup
             value={changeType}
             onValueChange={(value) =>
@@ -200,7 +186,9 @@ export function LogForm({ projects, onSubmit, onAddNewProject }: LogFormProps) {
 
         {/* תת-נושא */}
         <div className="space-y-2">
-          <Label htmlFor="subtopic">Subtopic</Label>
+          <Label className="text-lg font-medium text-foreground">
+            Subtopic
+          </Label>
           <Input
             id="subtopic"
             placeholder="E.g., Authentication System, User Interface"
@@ -211,7 +199,9 @@ export function LogForm({ projects, onSubmit, onAddNewProject }: LogFormProps) {
 
         {/* תיאור */}
         <div className="space-y-2">
-          <Label htmlFor="description">Description</Label>
+          <Label className="text-lg font-medium text-foreground">
+            Description
+          </Label>
           <Textarea
             id="description"
             placeholder="Describe what was changed or fixed..."
@@ -223,8 +213,8 @@ export function LogForm({ projects, onSubmit, onAddNewProject }: LogFormProps) {
       </CardContent>
 
       <CardFooter className="mt-4">
-        <Button type="submit" className="w-full">
-          Save Log Entry
+        <Button disabled={isSubmitting} type="submit" className="w-full">
+          {!isSubmitting ? "Save Log Entry" : "Saving..."}
         </Button>
       </CardFooter>
     </form>

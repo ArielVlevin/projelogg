@@ -58,6 +58,6 @@ export function useProjects() {
     isLoading, // טעינה
     isError, // שגיאה
     addProject: addProjectAsync,
-    isAdding: addProjectMutation.isPending,
+    isSubmitting: addProjectMutation.isPending,
   };
 }

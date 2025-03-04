@@ -1,44 +1,35 @@
 "use client";
 
 import { useLogs } from "@/hooks/useLogs";
-import { LogForm } from "@/components/log-form";
-import { LogSearch } from "@/components/log-search";
-import { LogTable } from "@/components/log-table";
+import { LogForm } from "@/components/log-form/log-form";
+import { LogSearch } from "@/components/log-search/log-search";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card } from "@/components/ui/card";
 import { useProjects } from "@/hooks/useProjects";
+import { LogTable } from "./table/log-table";
+import { LogFormSkeleton } from "./log-form/formSkeleton";
+import { LogTableSkeleton } from "./table/tableSkeleton";
 
-export function ProjectLogManager() {
-  const { logs, isLoading, isError, addLog, deleteLog } = useLogs();
+export function LogManager() {
+  const {
+    logs,
+    isLoading: isLogsLoading,
+    isError: isLogsError,
+    addLog,
+    deleteLog,
+  } = useLogs();
   const {
     projects,
     isLoading: isProjectsLoading,
     isError: isProjectsError,
     addProject,
-    isAdding,
+    isSubmitting,
   } = useProjects();
-  /*
-  // עוטפים את addProject בפונקציה שמחזירה Promise
-  const handleAddNewProject = async (name: string): Promise<string> => {
-    return new Promise((resolve, reject) => {
-      addProject(
-        { name },
-        {
-          onSuccess: (newProj) => {
-            // newProj נראה { name: "SomeName" }
-            resolve(newProj.name);
-          },
-          onError: (err) => {
-            reject(err);
-          },
-        }
-      );
-    });
-  };*/
 
-  if (isLoading || isProjectsLoading) return <p>Loading logs...</p>;
-  if (!logs) return <p>error...</p>;
-  if (isError || isProjectsError)
+  if (
+    (isLogsError && !isLogsLoading) ||
+    (isProjectsError && !isProjectsLoading)
+  )
     return <p className="text-red-500">Error loading logs</p>;
 
   return (
@@ -51,11 +42,16 @@ export function ProjectLogManager() {
 
         <TabsContent value="add">
           <Card className="p-6">
-            <LogForm
-              projects={projects ?? []}
-              onAddNewProject={addProject}
-              onSubmit={addLog}
-            />
+            {isProjectsLoading ? (
+              <LogFormSkeleton />
+            ) : (
+              <LogForm
+                projects={projects ?? []}
+                onAddNewProject={addProject}
+                onSubmit={addLog}
+                isSubmitting={isSubmitting}
+              />
+            )}
           </Card>
         </TabsContent>
 
@@ -63,7 +59,11 @@ export function ProjectLogManager() {
           <Card className="p-6 mb-6">
             {/* למשל אפשר להחזיר את LogSearch כאן */}
           </Card>
-          <LogTable logs={logs} onDelete={deleteLog} />
+          {isLogsLoading ? (
+            <LogTableSkeleton />
+          ) : (
+            <LogTable logs={logs ?? []} onDelete={deleteLog} />
+          )}
         </TabsContent>
       </Tabs>
     </div>

@@ -1,11 +1,16 @@
-import { Log } from "@/types/Log";
+import { Log, LogPopulated } from "@/types/Log";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 
 // Fetch logs from the API
-const fetchLogs = async (): Promise<Log[]> => {
-  const { data } = await axios.get("/api/logs");
-  return data.logs;
+const fetchLogs = async (): Promise<LogPopulated[]> => {
+  try {
+    const { data } = await axios.get("/api/logs");
+    return data.logs;
+  } catch (error) {
+    console.error("error: ", error);
+    throw new Error("error in fetch Logs");
+  }
 };
 
 // Add a new log to the API
@@ -21,7 +26,12 @@ const postLog = async (newLog: Omit<Log, "_id">) => {
 
 // Delete a log from the API
 const deleteLogById = async (id: string) => {
-  await axios.delete(`/api/logs/${id}`);
+  try {
+    await axios.delete(`/api/logs/${id}`);
+  } catch (error) {
+    console.error("error: ", error);
+    throw new Error("error in delete Log");
+  }
 };
 
 // Hook for managing logs
