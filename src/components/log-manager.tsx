@@ -1,7 +1,6 @@
 "use client";
 
 import { useLogs } from "@/hooks/useLogs";
-import { LogSearch } from "@/components/log-search/log-search";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card } from "@/components/ui/card";
 import { useProjects } from "@/hooks/useProjects";
@@ -11,6 +10,7 @@ import { LogTableSkeleton } from "./table/tableSkeleton";
 import { LogForm } from "./log-form/LogForm";
 import { useState } from "react";
 import { LogPopulated } from "@/types/Log";
+import { LogSearch } from "./log-search/LogSearch";
 
 export function LogManager() {
   const {

@@ -1,0 +1,98 @@
+"use client";
+
+import { useState } from "react";
+import { Button } from "@/components/ui/button";
+import { Label } from "@/components/ui/label";
+import {
+  Popover,
+  PopoverTrigger,
+  PopoverContent,
+} from "@/components/ui/popover";
+import { Calendar } from "@/components/ui/calendar";
+import { CalendarIcon } from "lucide-react";
+import { format, isAfter } from "date-fns";
+import { cn } from "@/lib/utils";
+
+interface DateFilterProps {
+  startDate: Date | undefined;
+  endDate: Date | undefined;
+  setStartDate: (date: Date | undefined) => void;
+  setEndDate: (date: Date | undefined) => void;
+}
+
+export function DateFilter({
+  startDate,
+  endDate,
+  setStartDate,
+  setEndDate,
+}: DateFilterProps) {
+  const [dateError, setDateError] = useState<string | null>(null);
+
+  /*
+  const handleEndDateChange = (date: Date | undefined) => {
+    if (date && startDate && isAfter(startDate, date)) {
+      setDateError("End date cannot be earlier than start date.");
+      setEndDate(new Date(startDate));
+    } else {
+      setDateError(null);
+      setEndDate(date);
+    }
+  };
+*/
+  return (
+    <div className="grid gap-4 grid-cols-2">
+      <div className="space-y-2">
+        <Label>Start Date</Label>
+        <Popover>
+          <PopoverTrigger asChild>
+            <Button
+              variant="outline"
+              className={cn(
+                "w-full justify-start text-left font-normal",
+                !startDate && "text-muted-foreground"
+              )}
+            >
+              <CalendarIcon className="mr-2 h-4 w-4" />
+              {startDate ? format(startDate, "PPP") : "Select start date"}
+            </Button>
+          </PopoverTrigger>
+          <PopoverContent className="w-auto p-0">
+            <Calendar
+              mode="single"
+              selected={startDate}
+              onSelect={setStartDate}
+              initialFocus
+            />
+          </PopoverContent>
+        </Popover>
+      </div>
+
+      <div className="space-y-2">
+        <Label>End Date</Label>
+        <Popover>
+          <PopoverTrigger asChild>
+            <Button
+              variant="outline"
+              className={cn(
+                "w-full justify-start text-left font-normal",
+                !endDate && "text-muted-foreground"
+              )}
+            >
+              <CalendarIcon className="mr-2 h-4 w-4" />
+              {endDate ? format(endDate, "PPP") : "Select end date"}
+            </Button>
+          </PopoverTrigger>
+          <PopoverContent className="w-auto p-0">
+            <Calendar
+              mode="single"
+              selected={endDate}
+              onSelect={setEndDate}
+              initialFocus
+            />
+          </PopoverContent>
+        </Popover>
+        {dateError && <p className="text-red-500 text-sm">{dateError}</p>}
+      </div>
+    </div>
+  );
+}
