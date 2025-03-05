@@ -37,8 +37,9 @@ npm install
 Create a `.env` file in the root directory and add the following:
 
 ```env
-MONGODB_URI=mongodb+srv://your_username:your_password@your_cluster.mongodb.net/logs-db
-NEXTAUTH_SECRET=your_secret_key
+MONGO_URI=mongodb://root:example@mongo_db:27017/projelogg?authSource=admin
+PORT=3000
+NODE_ENV=production
 ```
 
 ### 4️⃣ Start the application
@@ -53,17 +54,33 @@ Your project will be running at [http://localhost:3000](http://localhost:3000).
 
 ## 🐳 Running with Docker
 
-### 1️⃣ Build and start the container
+### 1️⃣ **Build and start the container (first time or after Dockerfile changes)**
 
 ```bash
-docker-compose up --build -d
+docker compose up --build -d
 ```
 
-### 2️⃣ Stopping the container
+### 2️⃣ **Start the server (without rebuilding, if it's already built)**
 
 ```bash
-docker-compose down
+docker compose up -d
 ```
+
+### 3️⃣ **Stopping the container**
+
+```bash
+docker compose down
+```
+
+### 4️⃣ **Stopping and removing everything (including volumes & database data)**
+
+```bash
+docker compose down -v
+```
+
+---
+
+🚀 **Tip:** Use `docker logs -f projelogg-app-1` to view live logs of the app.
 
 ---
 

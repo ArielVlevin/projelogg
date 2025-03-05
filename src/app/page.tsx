@@ -1,10 +1,23 @@
+"use client";
+import { Background } from "@/components/theme/backGround";
+import { ThemeSwitcher } from "@/components/theme/ThemeSwitcher";
 import { LogManager } from "@/components/log-manager/LogManager";
+import { Title } from "@/components/theme/Title";
 
 export default function Home() {
   return (
-    <main className="container mx-auto py-8 px-4">
-      <h1 className="text-3xl font-bold text-center mb-8">Log Manager</h1>
-      <LogManager />
-    </main>
+    <Background>
+      <div className="container mx-auto py-8 max-w-5xl relative">
+        <div className="absolute top-0 right-4">
+          <ThemeSwitcher />
+        </div>
+        <main className="container mx-auto py-8 px-4">
+          <Title size="3xl" className="text-center mb-6">
+            Log Manager
+          </Title>
+          <LogManager />
+        </main>
+      </div>
+    </Background>
   );
 }

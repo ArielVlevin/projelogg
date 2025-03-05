@@ -1,4 +1,4 @@
-import { Button } from "@/components/ui/button";
+import { Button } from "../theme/Button";
 
 interface PaginationControlsProps {
   currentPage: number;
@@ -14,7 +14,7 @@ export function PaginationControls({
   return (
     <div className="flex justify-between items-center p-4">
       <Button
-        variant="outline"
+        variant="soft"
         onClick={() => onPageChange(currentPage - 1)}
         disabled={currentPage === 1}
       >
@@ -24,7 +24,7 @@ export function PaginationControls({
         Page {currentPage} of {totalPages}
       </span>
       <Button
-        variant="outline"
+        variant="soft"
         onClick={() => onPageChange(currentPage + 1)}
         disabled={currentPage === totalPages}
       >

@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useState } from "react";
-import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
@@ -10,13 +9,16 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { useNotification } from "@/context/NotificationContext";
+import { useNotification } from "@/contexts/NotificationContext";
 import { Log } from "@/types/Log";
 import { Project } from "@/types/Project";
 
 import { ProjectSelector } from "./components/ProjectSelector";
 import { ChangeTypeSelector } from "./components/TypeSelector";
 import { TextField } from "../basic-ui/TextField";
+import { Button } from "../theme/Button";
+import { Title } from "../theme/Title";
+import { Separator } from "../ui/separator";
 
 interface LogFormProps {
   projects: Project[];
@@ -91,12 +93,18 @@ export function LogForm({
     <Card className="p-6">
       <form onSubmit={handleSubmit}>
         <CardHeader className="mb-4">
-          <CardTitle className="text-2xl">Add New Log Entry</CardTitle>
+          <CardTitle>
+            <Title as="h3" size="2xl">
+              Add New Log Entry
+            </Title>
+          </CardTitle>
           <CardDescription>
-            Record a new feature or bug fix for your project
+            <Title as="h1" size="sm">
+              Record a new feature or bug fix for your project
+            </Title>
           </CardDescription>
         </CardHeader>
-
+        <Separator className="my-2" />
         <CardContent className="space-y-4">
           <ProjectSelector
             projects={projects}
@@ -130,7 +138,12 @@ export function LogForm({
         </CardContent>
 
         <CardFooter className="mt-4">
-          <Button disabled={isSubmitting} type="submit" className="w-full">
+          <Button
+            variant={"gradient"}
+            disabled={isSubmitting}
+            type="submit"
+            className="w-full"
+          >
             {isSubmitting ? "Saving..." : "Save Log Entry"}
           </Button>
         </CardFooter>

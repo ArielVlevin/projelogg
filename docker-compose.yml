@@ -26,9 +26,14 @@ services:
     environment:
       MONGO_INITDB_ROOT_USERNAME: root
       MONGO_INITDB_ROOT_PASSWORD: example
+    volumes:
+      - mongo_data:/data/db
     networks:
       - projelogg_network
 
 networks:
   projelogg_network:
     driver: bridge
+
+volumes:
+  mongo_data:

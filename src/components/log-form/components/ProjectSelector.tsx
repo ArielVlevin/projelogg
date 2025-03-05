@@ -1,6 +1,5 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
   Select,
@@ -13,6 +12,7 @@ import type { Project } from "@/types/Project";
 import React from "react";
 import { ExtendedLabel } from "../../basic-ui/ExtendedLabel";
 import { FileText, Plus } from "lucide-react";
+import { Button } from "@/components/theme/Button";
 
 interface ProjectSelectorProps {
   projects: Project[];
@@ -40,7 +40,7 @@ export function ProjectSelector({
         <div className="flex items-center space-x-2">
           <Button
             type="button"
-            variant={!isCreatingNewProject ? "default" : "outline"}
+            variant={!isCreatingNewProject ? "subtle" : "outlined"}
             onClick={() => setIsCreatingNewProject(false)}
           >
             <FileText className="h-4 w-4" />
@@ -48,7 +48,7 @@ export function ProjectSelector({
           </Button>
           <Button
             type="button"
-            variant={isCreatingNewProject ? "default" : "outline"}
+            variant={isCreatingNewProject ? "subtle" : "outlined"}
             onClick={() => setIsCreatingNewProject(true)}
           >
             <Plus className="h-4 w-4" />

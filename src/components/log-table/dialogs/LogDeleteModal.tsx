@@ -12,7 +12,7 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { useState } from "react";
-import { useNotification } from "@/context/NotificationContext";
+import { useNotification } from "@/contexts/NotificationContext";
 import { ActionButton } from "../../basic-ui/actionButton";
 
 interface LogDeleteModalProps {

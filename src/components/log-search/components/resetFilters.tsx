@@ -1,4 +1,4 @@
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/theme/Button";
 import { Filter } from "lucide-react";
 
 interface ResetFiltersButtonProps {
@@ -7,7 +7,7 @@ interface ResetFiltersButtonProps {
 
 export function ResetFiltersButton({ onReset }: ResetFiltersButtonProps) {
   return (
-    <Button variant="outline" onClick={onReset} className="gap-2">
+    <Button variant="outlined" onClick={onReset} className="gap-2">
       <Filter className="h-4 w-4" />
       Reset Filters
     </Button>

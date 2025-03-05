@@ -6,15 +6,22 @@ import { DateFilter } from "./components/DateFilter";
 import { ChangeTypeFilter } from "./components/TypeFilter";
 import { useSearch } from "@/hooks/useSearch";
 
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "@/components/ui/accordion";
+import { AccordionContent } from "@/components/ui/accordion";
 import { Filter } from "lucide-react";
 import { ResetFiltersButton } from "./components/resetFilters";
-import { Card } from "../ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "../ui/card";
+import { Title } from "../theme/Title";
+import {
+  ThemedAccordion,
+  ThemedAccordionItem,
+  ThemedAccordionTrigger,
+} from "../theme/ThemedAccordion";
 
 interface LogSearchProps {
   logs: LogPopulated[];
@@ -39,41 +46,60 @@ export function LogSearch({ logs, projects, onFilter }: LogSearchProps) {
 
   return (
     <Card className="p-4 mb-6">
-      <Accordion type="single" collapsible className="w-full">
-        <AccordionItem value="filters">
-          <AccordionTrigger className="flex items-center gap-2 text-lg text-gray-500 font-semibold">
-            <Filter className="h-4 w-4" />
-            Search & Filters
-          </AccordionTrigger>
-          <AccordionContent className="pb-2">
-            <div className="space-y-4">
-              <SearchInput
-                searchTerm={searchTerm}
-                setSearchTerm={setSearchTerm}
-              />
-              <ChangeTypeFilter
-                changeTypeFilter={changeTypeFilter}
-                setChangeTypeFilter={setChangeTypeFilter}
-              />
-              <DateFilter
-                startDate={startDate}
-                endDate={endDate}
-                setStartDate={setStartDate}
-                setEndDate={setEndDate}
-              />
-
-              <div className="flex justify-between items-end">
-                <ProjectSelect
-                  projects={projects}
-                  selectedProjectId={selectedProjectId}
-                  setSelectedProjectId={setSelectedProjectId}
+      <CardHeader>
+        <CardTitle>
+          <Title as="h3" size="2xl">
+            View Logs
+          </Title>
+        </CardTitle>
+        <CardDescription>
+          {" "}
+          <Title as="h1" size="sm">
+            Search and filter your project logs
+          </Title>
+        </CardDescription>
+      </CardHeader>
+      <CardContent>
+        <ThemedAccordion type="single" collapsible className="w-full">
+          <ThemedAccordionItem value="filters">
+            <ThemedAccordionTrigger
+              icon={<Filter className="h-4 w-4" />}
+              variant="outline"
+              layout="spaceBetween"
+              className="mb-2"
+            >
+              <span>Search & Filters</span>
+            </ThemedAccordionTrigger>
+            <AccordionContent className="pb-2">
+              <div className="space-y-4">
+                <SearchInput
+                  searchTerm={searchTerm}
+                  setSearchTerm={setSearchTerm}
                 />
-                <ResetFiltersButton onReset={resetFilters} />
+                <ChangeTypeFilter
+                  changeTypeFilter={changeTypeFilter}
+                  setChangeTypeFilter={setChangeTypeFilter}
+                />
+                <DateFilter
+                  startDate={startDate}
+                  endDate={endDate}
+                  setStartDate={setStartDate}
+                  setEndDate={setEndDate}
+                />
+
+                <div className="flex justify-between items-end">
+                  <ProjectSelect
+                    projects={projects}
+                    selectedProjectId={selectedProjectId}
+                    setSelectedProjectId={setSelectedProjectId}
+                  />
+                  <ResetFiltersButton onReset={resetFilters} />
+                </div>
               </div>
-            </div>
-          </AccordionContent>
-        </AccordionItem>
-      </Accordion>
+            </AccordionContent>
+          </ThemedAccordionItem>
+        </ThemedAccordion>
+      </CardContent>
     </Card>
   );
 }
