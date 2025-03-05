@@ -9,8 +9,8 @@ import {
   TableRow,
 } from "@/components/ui/table";
 
-export function LogTableSkeleton() {
-  const rows = Array.from({ length: 8 });
+export function LogTableSkeleton({ length = 20 }: { length?: number }) {
+  const rows = Array.from({ length });
 
   return (
     <div className="rounded-md border animate-pulse">

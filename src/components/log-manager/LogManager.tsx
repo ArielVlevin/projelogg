@@ -16,6 +16,7 @@ export function LogManager() {
     isError: isLogsError,
     addLog,
     deleteLog,
+    isDeleting,
   } = useLogs();
 
   const {
@@ -51,7 +52,7 @@ export function LogManager() {
           logs={logs ?? []}
           filteredLogs={filteredLogs ?? []}
           projects={projects ?? []}
-          isLogsLoading={isLogsLoading}
+          isLogsLoading={isLogsLoading || isDeleting}
           onFilter={handleFilter}
           onDeleteLog={deleteLog}
         />

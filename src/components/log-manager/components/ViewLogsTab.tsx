@@ -27,7 +27,7 @@ export function ViewLogsTab({
     <TabsContent value="view">
       <LogSearch logs={logs} projects={projects} onFilter={onFilter} />
       {isLogsLoading ? (
-        <LogTableSkeleton />
+        <LogTableSkeleton length={filteredLogs.length} />
       ) : (
         <LogTable logs={filteredLogs} onDelete={onDeleteLog} />
       )}

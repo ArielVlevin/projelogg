@@ -15,7 +15,7 @@ import { Log } from "@/types/Log";
 import { Project } from "@/types/Project";
 
 import { ProjectSelector } from "./components/ProjectSelector";
-import { ChangeTypeSelector } from "./components/ChangeTypeSelector";
+import { ChangeTypeSelector } from "./components/TypeSelector";
 import { TextField } from "../basic-ui/TextField";
 
 interface LogFormProps {
