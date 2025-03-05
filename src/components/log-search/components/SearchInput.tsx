@@ -1,7 +1,7 @@
 "use client";
 
+import { ExtendedLabel } from "@/components/basic-ui/ExtendedLabel";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 
 interface SearchInputProps {
   searchTerm: string;
@@ -11,7 +11,7 @@ interface SearchInputProps {
 export function SearchInput({ searchTerm, setSearchTerm }: SearchInputProps) {
   return (
     <div className="space-y-2">
-      <Label htmlFor="search">Search</Label>
+      <ExtendedLabel>Search</ExtendedLabel>
       <Input
         id="search"
         placeholder="Search by description or subtopic..."

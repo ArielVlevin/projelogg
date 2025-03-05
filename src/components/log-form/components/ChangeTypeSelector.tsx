@@ -1,8 +1,8 @@
 "use client";
 
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { Label } from "@/components/ui/label";
 import React from "react";
+import { ExtendedLabel } from "../../basic-ui/ExtendedLabel";
 
 interface ChangeTypeSelectorProps {
   value: "feature" | "bugfix";
@@ -15,7 +15,7 @@ export function ChangeTypeSelector({
 }: ChangeTypeSelectorProps) {
   return (
     <div className="space-y-2">
-      <Label className="text-lg font-medium text-foreground">Change Type</Label>
+      <ExtendedLabel>Change Type</ExtendedLabel>
       <RadioGroup
         value={value}
         onValueChange={(val) => onChange(val as "feature" | "bugfix")}
@@ -23,15 +23,23 @@ export function ChangeTypeSelector({
       >
         <div className="flex items-center space-x-2">
           <RadioGroupItem value="feature" id="feature" />
-          <Label htmlFor="feature" className="cursor-pointer">
+          <ExtendedLabel
+            color="primary"
+            className="cursor-pointer"
+            htmlFor="feature"
+          >
             🆕 New Feature
-          </Label>
+          </ExtendedLabel>
         </div>
         <div className="flex items-center space-x-2">
           <RadioGroupItem value="bugfix" id="bugfix" />
-          <Label htmlFor="bugfix" className="cursor-pointer">
+          <ExtendedLabel
+            color="primary"
+            className="cursor-pointer"
+            htmlFor="bugfix"
+          >
             🐛 Bug Fix
-          </Label>
+          </ExtendedLabel>
         </div>
       </RadioGroup>
     </div>

@@ -1,8 +1,6 @@
 "use client";
 
-import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Label } from "@/components/ui/label";
 import {
   Popover,
   PopoverTrigger,
@@ -10,8 +8,9 @@ import {
 } from "@/components/ui/popover";
 import { Calendar } from "@/components/ui/calendar";
 import { CalendarIcon } from "lucide-react";
-import { format, isAfter } from "date-fns";
+import { format } from "date-fns";
 import { cn } from "@/lib/utils";
+import { ExtendedLabel } from "@/components/basic-ui/ExtendedLabel";
 
 interface DateFilterProps {
   startDate: Date | undefined;
@@ -26,7 +25,7 @@ export function DateFilter({
   setStartDate,
   setEndDate,
 }: DateFilterProps) {
-  const [dateError, setDateError] = useState<string | null>(null);
+  // const [dateError, setDateError] = useState<string | null>(null);
 
   /*
   const handleEndDateChange = (date: Date | undefined) => {
@@ -42,7 +41,7 @@ export function DateFilter({
   return (
     <div className="grid gap-4 grid-cols-2">
       <div className="space-y-2">
-        <Label>Start Date</Label>
+        <ExtendedLabel>Start Date</ExtendedLabel>
         <Popover>
           <PopoverTrigger asChild>
             <Button
@@ -68,7 +67,7 @@ export function DateFilter({
       </div>
 
       <div className="space-y-2">
-        <Label>End Date</Label>
+        <ExtendedLabel>End Date</ExtendedLabel>
         <Popover>
           <PopoverTrigger asChild>
             <Button
@@ -91,8 +90,8 @@ export function DateFilter({
             />
           </PopoverContent>
         </Popover>
-        {dateError && <p className="text-red-500 text-sm">{dateError}</p>}
       </div>
     </div>
   );
 }
+//{dateError && <p className="text-red-500 text-sm">{dateError}</p>}

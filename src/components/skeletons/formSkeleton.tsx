@@ -11,7 +11,7 @@ import {
 
 export function LogFormSkeleton() {
   return (
-    <Card>
+    <Card className="p-6">
       <CardHeader>
         <CardTitle className="h-4 w-32 bg-gray-200 rounded animate-pulse" />
         <CardDescription className="mt-2 h-3 w-3/4 bg-gray-200 rounded animate-pulse" />

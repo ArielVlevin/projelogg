@@ -7,11 +7,8 @@ export async function GET() {
     await dbConnect();
     const projects = await Project.find().sort({ createdAt: -1 });
     return NextResponse.json({ success: true, projects }, { status: 200 });
-  } catch (error: any) {
-    return NextResponse.json(
-      { success: false, error: error.message },
-      { status: 500 }
-    );
+  } catch (error) {
+    return NextResponse.json({ success: false, error: error }, { status: 500 });
   }
 }
 
@@ -24,10 +21,7 @@ export async function POST(request: Request) {
       { success: true, project: newProject },
       { status: 201 }
     );
-  } catch (error: any) {
-    return NextResponse.json(
-      { success: false, error: error.message },
-      { status: 400 }
-    );
+  } catch (error) {
+    return NextResponse.json({ success: false, error: error }, { status: 400 });
   }
 }

@@ -5,18 +5,32 @@ const MONGODB_URI = process.env.MONGO_URI;
 
 if (!MONGODB_URI) {
   throw new Error(
-    "Please define the MONGODB_URI environment variable inside .env.local"
+    "Please define the MONGO_URI environment variable inside .env.local"
   );
 }
 
-/**
- * Global is used here to maintain a cached connection across hot reloads in development.
- * This prevents connections from growing exponentially during API Route usage.
- */
-let cached = global.mongoose;
-if (!cached) {
-  cached = global.mongoose = { conn: null, promise: null };
+// 📌 הרחבת `globalThis` כדי למנוע שגיאת TypeScript
+declare global {
+  let mongooseCache: {
+    conn: mongoose.Connection | null;
+    promise: Promise<mongoose.Connection> | null;
+  };
 }
+
+// 📌 יצירת מטמון חיבור ל-MongoDB ב-`globalThis`
+const globalWithMongoose = global as typeof globalThis & {
+  mongooseCache?: {
+    conn: mongoose.Connection | null;
+    promise: Promise<mongoose.Connection> | null;
+  };
+};
+
+// אם אין מטמון, ניצור אחד
+if (!globalWithMongoose.mongooseCache) {
+  globalWithMongoose.mongooseCache = { conn: null, promise: null };
+}
+
+const cached = globalWithMongoose.mongooseCache;
 
 async function dbConnect() {
   if (cached.conn) {
@@ -25,10 +39,10 @@ async function dbConnect() {
 
   if (!cached.promise) {
     cached.promise = mongoose
-      .connect(MONGODB_URI as string, {})
-      .then((mongoose) => {
-        return mongoose;
-      });
+      .connect(MONGODB_URI as string, {
+        bufferCommands: false,
+      })
+      .then((mongoose) => mongoose.connection);
   }
 
   cached.conn = await cached.promise;

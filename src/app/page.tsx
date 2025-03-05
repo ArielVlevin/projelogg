@@ -1,4 +1,4 @@
-import { LogManager } from "@/components/log-manager";
+import { LogManager } from "@/components/log-manager/LogManager";
 
 export default function Home() {
   return (

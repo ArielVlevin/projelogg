@@ -2,9 +2,10 @@
 
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { Label } from "@/components/ui/label";
 import React from "react";
+import { ExtendedLabel } from "./ExtendedLabel";
 
+export const LABEL_CLASSNAME = "text-lg font-medium text-foreground";
 interface TextFieldProps {
   label: string;
   value: string;
@@ -22,7 +23,7 @@ export function TextField({
 }: TextFieldProps) {
   return (
     <div className="space-y-2">
-      <Label className="text-lg font-medium text-foreground">{label}</Label>
+      <ExtendedLabel>{label}</ExtendedLabel>
       {multiline ? (
         <Textarea
           rows={4}

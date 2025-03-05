@@ -12,11 +12,8 @@ export async function GET() {
       .populate("project_id");
 
     return NextResponse.json({ success: true, logs }, { status: 200 });
-  } catch (error: any) {
-    return NextResponse.json(
-      { success: false, error: error.message },
-      { status: 500 }
-    );
+  } catch (error) {
+    return NextResponse.json({ success: false, error: error }, { status: 500 });
   }
 }
 
@@ -25,8 +22,6 @@ export async function POST(request: Request) {
     await dbConnect();
     // שליפת JSON מהגוף
     const body = await request.json();
-
-    console.log("** POST /api/logs *body: ", body);
     // הפעלת ולידציה
     const parseResult = logSchema.safeParse(body);
     if (!parseResult.success) {
@@ -42,10 +37,7 @@ export async function POST(request: Request) {
     const newLog = await Log.create(validatedData);
 
     return NextResponse.json({ success: true, log: newLog }, { status: 201 });
-  } catch (error: any) {
-    return NextResponse.json(
-      { success: false, error: error.message },
-      { status: 400 }
-    );
+  } catch (error) {
+    return NextResponse.json({ success: false, error: error }, { status: 400 });
   }
 }

@@ -22,8 +22,8 @@ _(Add project screenshots here)_
 ### 1️⃣ Clone the repository
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/log-management.git
-cd log-management
+git clone https://github.com/ArielVlevin/projelogg.git
+cd projelogg
 ```
 
 ### 2️⃣ Install dependencies
@@ -108,7 +108,7 @@ This project is licensed under the MIT License.
 ## ✨ Contributors
 
 👤 **Your Name**\
-📧 [your.email@example.com](mailto:your.email@example.com)
+📧 [ariel.v.levin@gmail.com](mailto:ariel.v.levin@gmail.com)
 
 ---
 

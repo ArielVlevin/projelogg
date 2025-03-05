@@ -1,5 +1,6 @@
 "use client";
 
+import { ExtendedLabel } from "@/components/basic-ui/ExtendedLabel";
 import {
   Select,
   SelectContent,
@@ -7,7 +8,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Label } from "@/components/ui/label";
 import { Project } from "@/types/Project";
 
 interface ProjectSelectProps {
@@ -23,7 +23,7 @@ export function ProjectSelect({
 }: ProjectSelectProps) {
   return (
     <div className="space-y-2">
-      <Label htmlFor="project-filter">Project</Label>
+      <ExtendedLabel>Project</ExtendedLabel>
       <Select value={selectedProjectId} onValueChange={setSelectedProjectId}>
         <SelectTrigger id="project-filter">
           <SelectValue placeholder="All Projects" />

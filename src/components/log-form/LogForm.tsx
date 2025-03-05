@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
+  Card,
   CardContent,
   CardDescription,
   CardFooter,
@@ -13,9 +14,8 @@ import { useNotification } from "@/context/NotificationContext";
 import { Log } from "@/types/Log";
 import { Project } from "@/types/Project";
 
-// יבוא הקומפוננטות הקטנות
-import { ProjectSelector } from "./ProjectSelector";
-import { ChangeTypeSelector } from "./ChangeTypeSelector";
+import { ProjectSelector } from "./components/ProjectSelector";
+import { ChangeTypeSelector } from "./components/ChangeTypeSelector";
 import { TextField } from "../basic-ui/TextField";
 
 interface LogFormProps {
@@ -49,7 +49,6 @@ export function LogForm({
 
     if (isCreatingNewProject) {
       if (!newProjectName) return showError("Missing project name");
-
       try {
         const newProject: Project = {
           name: newProjectName,
@@ -89,52 +88,53 @@ export function LogForm({
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <CardHeader className="mb-4">
-        <CardTitle className="text-2xl">Add New Log Entry</CardTitle>
-        <CardDescription>
-          Record a new feature or bug fix for your project
-        </CardDescription>
-      </CardHeader>
+    <Card className="p-6">
+      <form onSubmit={handleSubmit}>
+        <CardHeader className="mb-4">
+          <CardTitle className="text-2xl">Add New Log Entry</CardTitle>
+          <CardDescription>
+            Record a new feature or bug fix for your project
+          </CardDescription>
+        </CardHeader>
 
-      <CardContent className="space-y-4">
-        {/* פרויקט */}
-        <ProjectSelector
-          projects={projects}
-          selectedProjectId={selectedProjectId}
-          setSelectedProjectId={setSelectedProjectId}
-          isCreatingNewProject={isCreatingNewProject}
-          setIsCreatingNewProject={setIsCreatingNewProject}
-          newProjectName={newProjectName}
-          setNewProjectName={setNewProjectName}
-        />
+        <CardContent className="space-y-4">
+          <ProjectSelector
+            projects={projects}
+            selectedProjectId={selectedProjectId}
+            setSelectedProjectId={setSelectedProjectId}
+            isCreatingNewProject={isCreatingNewProject}
+            setIsCreatingNewProject={setIsCreatingNewProject}
+            newProjectName={newProjectName}
+            setNewProjectName={setNewProjectName}
+          />
 
-        {/* Change Type */}
-        <ChangeTypeSelector value={changeType} onChange={setChangeType} />
+          {/* Change Type */}
+          <ChangeTypeSelector value={changeType} onChange={setChangeType} />
 
-        {/* Subtopic */}
-        <TextField
-          label="Subtopic"
-          placeholder="E.g., Authentication System"
-          value={subtopic}
-          onChange={setSubtopic}
-        />
+          {/* Subtopic */}
+          <TextField
+            label="Subtopic"
+            placeholder="E.g., Authentication System"
+            value={subtopic}
+            onChange={setSubtopic}
+          />
 
-        {/* Description */}
-        <TextField
-          label="Description"
-          placeholder="Describe what was changed or fixed..."
-          value={description}
-          onChange={setDescription}
-          multiline
-        />
-      </CardContent>
+          {/* Description */}
+          <TextField
+            label="Description"
+            placeholder="Describe what was changed or fixed..."
+            value={description}
+            onChange={setDescription}
+            multiline
+          />
+        </CardContent>
 
-      <CardFooter className="mt-4">
-        <Button disabled={isSubmitting} type="submit" className="w-full">
-          {isSubmitting ? "Saving..." : "Save Log Entry"}
-        </Button>
-      </CardFooter>
-    </form>
+        <CardFooter className="mt-4">
+          <Button disabled={isSubmitting} type="submit" className="w-full">
+            {isSubmitting ? "Saving..." : "Save Log Entry"}
+          </Button>
+        </CardFooter>
+      </form>
+    </Card>
   );
 }

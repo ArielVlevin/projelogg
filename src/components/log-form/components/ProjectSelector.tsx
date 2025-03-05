@@ -2,7 +2,6 @@
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import {
   Select,
   SelectContent,
@@ -12,6 +11,8 @@ import {
 } from "@/components/ui/select";
 import type { Project } from "@/types/Project";
 import React from "react";
+import { ExtendedLabel } from "../../basic-ui/ExtendedLabel";
+import { FileText, Plus } from "lucide-react";
 
 interface ProjectSelectorProps {
   projects: Project[];
@@ -32,27 +33,30 @@ export function ProjectSelector({
   setIsCreatingNewProject,
   setNewProjectName,
 }: ProjectSelectorProps) {
+  if (projects.length === 0) setIsCreatingNewProject(true);
   return (
     <div className="space-y-2">
-      <Label className="text-lg font-medium text-foreground">Project</Label>
       {projects.length > 0 && (
-        <div className="flex items-center space-x-4">
+        <div className="flex items-center space-x-2">
           <Button
             type="button"
             variant={!isCreatingNewProject ? "default" : "outline"}
             onClick={() => setIsCreatingNewProject(false)}
           >
-            Select Existing
+            <FileText className="h-4 w-4" />
+            Existing Project
           </Button>
           <Button
             type="button"
             variant={isCreatingNewProject ? "default" : "outline"}
             onClick={() => setIsCreatingNewProject(true)}
           >
+            <Plus className="h-4 w-4" />
             New Project
           </Button>
         </div>
       )}
+      <ExtendedLabel>Project</ExtendedLabel>
 
       {projects.length === 0 && (
         <p className="text-sm text-gray-500">
