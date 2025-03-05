@@ -124,7 +124,7 @@ This project is licensed under the MIT License.
 
 ## ✨ Contributors
 
-👤 **Your Name**\
+👤 **Ariel Levin**\
 📧 [ariel.v.levin@gmail.com](mailto:ariel.v.levin@gmail.com)
 
 ---
