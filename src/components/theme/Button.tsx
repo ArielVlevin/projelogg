@@ -55,7 +55,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
     return (
       <ShadcnButton
         ref={ref}
-        variant={getShadcnVariant() as any}
+        variant={getShadcnVariant() as "default" | "outline" | "ghost" | "link"}
         className={cn(getButtonStyles(), className)}
         {...props}
       >
